@@ -66,43 +66,11 @@
                     font-size: 100%;
                 }
             }
-   
-            .box {
-                display: inline-block;
-                margin: 0.5em 1.25em;
-                width: 10em;
-                vertical-align: middle;
-            }
-
-            .box span {
-                display: block;
-                line-height: 2em;
-                font-size: 2em;
-            }
-
-            .box ul {
-                list-style: none;
-                padding-left: 0;
-            }    
-
-            footer {
-                font-size: 80%;
-                width: 100%;
-                padding: 10px;
-                border-top: 1px solid #d2d2d2;
-            }
-
-            .technologies {
-                margin: 0.5em 20%;
-            }
-            .technologies span {
-                margin: 0.5em;
-            }
-            .big {
-                font-size: 130%;
-            }
-            .medium {
-                font-size: 115%;
+            
+            .content {
+                align-items: center;
+                display: flex;
+                justify-content: space-around;
             }
 
             .reliable-partner img {
@@ -122,62 +90,13 @@
 
         <div class="page d-flex flex-column">
             <div class="content flex-grow-1" id="about">
-                <h2>About Us</h2>
-                <div class="d-flex justify-content-around flex-wrap align-content-start">
-                    <div class="box">
-                        <i class="fa fa-terminal"></i>
-                        <h3>PROGRAMMING</h3>
-                        <p>We design.<br/>We write.<br/>We test.<br/>We fix.
-                    </div>
-                    <div class="box">
-                        <i class="fa fa-bars"></i>
-                        <h3>FULL STACK</h3>
-                        <p>From hardcore database query optimization to user interface polishing.</p>
-                    </div>
-                    <div class="box">
-                        <i class="fa fa-briefcase"></i>
-                        <h3>CONSULTING</h3>
-                        <p>We help our customers with their projects. On-site or remotely.</p>
-                    </div>
-                    <div class="box">
-                        <i class="fa fa-map-marker-alt"></i>
-                        <h3>LOCATION</h3>
-                        <p>Greater Tampere region.</p>
-                    </div>
-                </div>
-
-                <h2>Technologies</h2>
-                <div class="technologies">
-                    <span class="big">kotlin</span>
-                    <span class="big">spring</span>
-                    <span>redux</span>
-                    <span class="medium">typescript</span>
-                    <span class=big">C#</span>
-                    <span class="big">angular</span>
-                    <span class="medium">docker</span>
-                    <span>oracle</span>
-                    <span>mssql</span>
-                    <span class="medium">nginx</span>
-                    <span>javascript</span>
-                    <span class="medium">react</span>
-                    <span class="medium">.NET</span>
-                    <span>node.js</span>
-                    <span class="big">java</span>
-                    <span class="medium">postgresql</span>
-                    <span>gradle</span>
-                </div>
-
-                <h2>Contact</h2>
                 <div class="contact">
                     <div><a href="mailto:contact@edenspace.fi">contact@edenspace.fi</a></div>
                     <div><a href="tel:+358505000094">+358 50 5000 094</a></div>
-                    <div class="mt-3 reliable-partner" title="Reliable partner"><a href="http://tilaajavastuu.fi"><img src="reliablepartner.png"/></a></div>
+                    <span title="business id">2656910-7<span></span>
                 </div>
             </div>
-            
-            <footer class="mt-4">
-                <span title="business id">2656910-7<span>
-            </footer>
+            <div class="reliable-partner" title="Reliable partner"><a href="http://tilaajavastuu.fi"><img src="reliablepartner.png"/></a></div>
         </div>    
         
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
