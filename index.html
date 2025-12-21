@@ -1,111 +1,114 @@
 <!DOCTYPE html>
-<html>
-    <head>  
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/css?family=Inconsolata|Libre+Barcode+128+Text" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-        <!-- Removed Bootstrap dependency: all layout and styles are implemented with custom CSS -->
-        <title>Edenspace Oy</title>
-        <style>
-            /* Page basics */
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Edenspace Oy</title>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Libre+Barcode+128+Text" rel="stylesheet">
+    <style>
+        :root{
+            --bg: #000;
+            --fg: #fff;
+            --muted: #e6e6e6;
+            --max-width: 900px; /* maximum content width */
+            --footer-height: 84px; /* fixed footer height */
+            --footer-logo-h: 56px; /* fixed footer logo height (does NOT scale) */
+        }
 
-            body {
-                background: #000; /* black background */
-                color: #ffffff;
-                font-family: "Inconsolata", monospace;
-                text-align: center;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                font-size: 18px;
-                display: flex;
-                flex-direction: column;
-            }
+        html,body{height:100%;margin:0}
+        body{
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            align-items:stretch;
+            background:var(--bg);
+            color:var(--fg);
+            font-family: "Inconsolata", monospace;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            /* fluid base font size */
+            font-size: clamp(16px, 1.6vw, 18px);
+        }
 
-            /* Logo and tagline */
-            .hero {
-                flex: 1 0 auto; /* take available space */
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 2rem;
-            }
+        main.hero{
+            flex:1 0 auto;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding: clamp(1rem, 6vw, 2.5rem) 1rem;
+        }
 
-            h1 {
-                font-family: 'Libre Barcode 128 Text', monospace;
-                font-size: 7rem;
-                margin: 0;
-                font-weight: normal;
-            }
+        .content{
+            width: min(92vw, var(--max-width));
+            text-align:center;
+        }
 
-            .tagline {
-                font-size: 1.25rem;
-                color: #e6e6e6;
-            }
+        /* logo text (non-semantic div, not bold) */
+        .logo-text{
+            margin:0;
+            font-family: 'Libre Barcode 128 Text', monospace;
+            /* allow EDENSPACE to grow almost full width on narrow screens */
+            font-size: clamp(2.8rem, 22vw, 8rem);
+            line-height:1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 400; /* explicitly not bold */
+        }
 
-            a {
-                color: inherit;
-                text-decoration: none;;
-            }
+        .tagline{
+            margin-top: clamp(.5rem, 1.6vw, .85rem);
+            color: var(--muted);
+            font-size: clamp(1rem, 2.4vw, 1.25rem);
+        }
 
-            /* Footer anchored to the bottom */
-            footer.site-footer {
-                flex-shrink: 0;
-                padding: 0.75rem 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 1.25rem;
-                border-top: 1px solid rgba(255,255,255,0.06);
-                background: rgba(0,0,0,0.9);
-            }
+        .contact{
+            /* more space above the email */
+            margin-top: clamp(1rem, 4vw, 1.5rem);
+            display:flex;
+            flex-direction:column;
+            gap: clamp(.15rem, .8vw, .4rem);
+            align-items:center;
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+            color: var(--muted);
+        }
 
-            .site-footer .reliable-partner img {
-                height: 4rem; /* larger logo — placed at very bottom */
-                display: block;
-                margin-top: 0.5rem;
-            }
+        .contact a{ color:inherit; text-decoration:none }
 
-            .site-footer .meta {
-                /* match the tagline style and stack lines vertically */
-                font-family: "Inconsolata", monospace;
-                font-size: 1.25rem;
-                color: #e6e6e6;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.2rem;
-                line-height: 1.15;
-            }
+        footer.site-footer{
+            height: var(--footer-height);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background: rgba(0,0,0,0.9);
+            flex-shrink:0;
+        }
 
-            @media (max-width: 520px) {
-                h1 { font-size: 2.6rem; }
-                .tagline { font-size: 1rem; }
-                .site-footer { flex-direction: column; gap: .5rem; padding: 0.75rem; }
-                .site-footer .reliable-partner img { height: 2.6rem; }
-            }
-        </style>
-    </head>
-    <body>
-        <main class="hero" role="main">
-            <h1><a href="#">EDENSPACE</a></h1>
+        /* Footer image is fixed size and does NOT scale */
+        .site-footer .reliable-partner img{
+            height: var(--footer-logo-h);
+            width: auto;
+            display:block;
+        }
+
+    </style>
+</head>
+<body>
+    <main class="hero" role="main">
+        <div class="content">
+            <div class="logo-text">EDENSPACE</div>
             <div class="tagline">a software development company</div>
-        </main>
-
-        <footer class="site-footer" role="contentinfo">
-            <div class="meta">
+            <div class="contact" aria-label="contact details">
                 <div><a href="mailto:contact@edenspace.fi">contact@edenspace.fi</a></div>
                 <div>2656910-7</div>
-                <a class="reliable-partner" href="https://www.vastuugroup.fi/palvelut/luotettava-kumppani" title="Luotettava kumppani">
-                    <img src="luotettava-kumppani-logo-white.png" alt="Luotettava kumppani logo (valkoinen)">
-                </a>
             </div>
-        </footer>
-    </body>
+        </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="reliable-partner" aria-hidden="false">
+            <img src="luotettava-kumppani-logo-white.png" alt="Luotettava kumppani">
+        </div>
+    </footer>
+</body>
 </html>
