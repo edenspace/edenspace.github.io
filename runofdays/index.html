@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Run of Days</title>
+  <meta name="description" content="Run of Days turns your Apple Health runs into clear streaks, summaries, and VO2max trends." />
+  <style>
+    :root{
+      --bg:#0b0c0f; --card:#12141a; --text:#e9ecf1; --muted:#a9b0bd;
+      --link:#7ab7ff; --border:rgba(255,255,255,0.10);
+      --accent:#37d67a; --accent2:#8b5cf6; --danger:#ff6b6b;
+      --max:980px; --radius:18px; --pad:18px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(55,214,122,0.22), transparent 60%),
+        radial-gradient(1200px 800px at 90% 10%, rgba(122,183,255,0.20), transparent 60%),
+        radial-gradient(900px 700px at 60% 120%, rgba(139,92,246,0.15), transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max);margin:0 auto;padding:20px}
+    header{padding:28px 0 10px}
+    nav{
+      display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+      padding:10px 12px;border:1px solid var(--border);border-radius:999px;
+      background:rgba(255,255,255,0.04);backdrop-filter:blur(10px);
+    }
+    .nav-left{display:flex;gap:10px;align-items:center}
+    .logo-img{
+      width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+      box-shadow:0 12px 34px rgba(0,0,0,0.35);
+      object-fit:cover;
+      display:block;
+      background:rgba(255,255,255,0.05);
+    }
+    h1{margin:0;font-size:18px;letter-spacing:0.2px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
+    .nav-right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 12px;border-radius:999px;border:1px solid var(--border);
+      background:rgba(255,255,255,0.05);font-weight:700;
+    }
+    .btn:hover{background:rgba(255,255,255,0.08);text-decoration:none}
+    .btn.primary{
+      background:linear-gradient(135deg, rgba(55,214,122,0.95), rgba(122,183,255,0.95));
+      color:#071018;border:none;
+    }
+    .btn.primary:hover{filter:brightness(1.03)}
+    .hero{
+      display:grid;gap:16px;grid-template-columns:1fr;align-items:center;
+      padding:18px 0 8px;
+    }
+    @media (min-width:860px){.hero{grid-template-columns:1.2fr 0.8fr}}
+    .card{
+      background:rgba(18,20,26,0.85);border:1px solid var(--border);
+      border-radius:var(--radius);padding:var(--pad);backdrop-filter:blur(10px);
+      box-shadow:0 18px 50px rgba(0,0,0,0.35);
+    }
+    .kicker{color:rgba(55,214,122,0.95);font-weight:800;letter-spacing:0.4px;text-transform:uppercase;font-size:12px}
+    h2{margin:8px 0 0;font-size:34px;line-height:1.1}
+    .lead{margin:10px 0 0;color:var(--muted);max-width:70ch;font-size:16px}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .chip{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:10px 12px;border-radius:999px;border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);font-weight:700;color:var(--text);
+    }
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(55,214,122,0.15)}
+    .grid2{display:grid;gap:14px;grid-template-columns:1fr}
+    @media (min-width:860px){.grid2{grid-template-columns:1fr 1fr}}
+    .features{display:grid;gap:12px;margin-top:14px}
+    .feature{
+      display:flex;gap:12px;align-items:flex-start;
+      padding:12px;border:1px solid var(--border);border-radius:16px;
+      background:rgba(255,255,255,0.03);
+    }
+    .icon{
+      width:34px;height:34px;border-radius:12px;border:1px solid var(--border);
+      background:rgba(255,255,255,0.05);display:grid;place-items:center;
+      font-weight:900;
+    }
+    h3{margin:0;font-size:15px}
+    .feature p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .shots{display:grid;gap:12px;grid-template-columns:1fr}
+    @media (min-width:860px){.shots{grid-template-columns:1fr 1fr}}
+
+    /* Screenshot sizing: iPhone portrait aspect, fills card nicely */
+    .shot{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(255,255,255,0.03);
+      overflow:hidden;
+      aspect-ratio: 9 / 19.5;
+      min-height: 360px;
+      display:block;
+    }
+    .shot img{
+      width:100%;
+      height:100%;
+      object-fit:cover; /* keeps it looking good even if the PNG is slightly different ratio */
+      display:block;
+    }
+
+    .section-title{margin:22px 0 10px;font-size:18px}
+    details{border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+    summary{cursor:pointer;font-weight:800;list-style:none}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:">";float:right;transform:rotate(90deg);transition:transform .15s ease;color:var(--muted)}
+    details[open] summary:after{transform:rotate(-90deg)}
+    .answer{margin-top:10px;color:var(--muted)}
+    footer{padding:22px 0 30px;color:var(--muted);font-size:13px}
+    .fine{font-size:12px;color:var(--muted)}
+    .links{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);font-weight:800;
+    }
+    .badge .dot{background:var(--link);box-shadow:0 0 0 3px rgba(122,183,255,0.15)}
+    .callout{
+      margin-top:12px;padding:12px;border:1px solid var(--border);
+      background:rgba(255,255,255,0.03);border-radius:16px;color:var(--muted)
+    }
+    .danger{color:var(--danger);font-weight:800}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <nav>
+        <div class="nav-left">
+          <!-- Logo file: logo.png (same folder) -->
+          <img class="logo-img" src="logo.png" alt="Run of Days logo" />
+          <div class="brand">
+            <h1>Run of Days</h1>
+            <p>Streaks and insights from Apple Health</p>
+          </div>
+        </div>
+        <div class="nav-right">
+          <a class="btn" href="#support">Support</a>
+          <a class="btn" href="privacy-policy.html">Privacy Policy</a>
+          <a class="btn" href="terms-of-use.html">Terms of Use</a>
+
+          <!-- Replace APP_STORE_LINK with your actual App Store URL -->
+          <a class="btn" href="APP_STORE_LINK" rel="noopener">App Store</a>
+
+          <a class="btn primary" href="mailto:runofdays@edenspace.fi?subject=Run%20of%20Days%20Support">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <div class="kicker">Run of Days</div>
+        <h2>Build your running streak, day by day.</h2>
+        <p class="lead">
+          Run of Days turns your running workouts into clear streaks, simple summaries, and VO2max trends.
+          Data is read from Apple Health and stays on your device.
+        </p>
+
+        <div class="chips">
+          <span class="chip"><span class="dot" aria-hidden="true"></span> Streak tracking</span>
+          <span class="chip"><span class="dot" aria-hidden="true"></span> Indoor and outdoor splits</span>
+          <span class="chip"><span class="dot" aria-hidden="true"></span> VO2max trends</span>
+          <span class="chip"><span class="dot" aria-hidden="true"></span> Clean export</span>
+        </div>
+
+        <div class="links" style="margin-top:14px">
+          <a class="badge" href="mailto:runofdays@edenspace.fi?subject=Run%20of%20Days%20Support"><span class="dot" aria-hidden="true"></span> Email support</a>
+          <a class="badge" href="https://apps.apple.com/account/subscriptions"><span class="dot" aria-hidden="true"></span> Manage subscriptions</a>
+          <a class="badge" href="APP_STORE_LINK" rel="noopener"><span class="dot" aria-hidden="true"></span> View on App Store</a>
+        </div>
+
+        <div class="callout">
+          Privacy first. No accounts. No tracking. Your running data stays on your device and in Apple Health.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Screenshots</div>
+        <div class="shots">
+          <!-- Screenshot files: screenshot1.png and screenshot2.png (same folder) -->
+          <div class="shot"><img src="screenshot1.png" alt="Run of Days screenshot 1" loading="lazy" /></div>
+          <div class="shot"><img src="screenshot2.png" alt="Run of Days screenshot 2" loading="lazy" /></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="card">
+        <div class="section-title">What you can do</div>
+        <div class="features">
+          <div class="feature">
+            <div class="icon" aria-hidden="true">1</div>
+            <div>
+              <h3>Track streaks</h3>
+              <p>See your current streak and review past streaks with clear date ranges.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="icon" aria-hidden="true">2</div>
+            <div>
+              <h3>Understand your training</h3>
+              <p>Indoor and outdoor summaries plus per streak averages for distance, pace, speed, and heart rate.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="icon" aria-hidden="true">3</div>
+            <div>
+              <h3>Follow VO2max trends</h3>
+              <p>Visualize VO2max within a streak to see how your fitness changes over time.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="icon" aria-hidden="true">4</div>
+            <div>
+              <h3>Export your data</h3>
+              <p>Subscribers can export streak data to CSV for analysis and personal records.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="support">
+        <div class="section-title">Support and FAQ</div>
+
+        <div class="callout">
+          For support, email <a href="mailto:runofdays@edenspace.fi?subject=Run%20of%20Days%20Support">runofdays@edenspace.fi</a>.
+          Include your device model and iOS version, and what you expected vs what happened.
+        </div>
+
+        <details>
+          <summary>How do I enable Health access</summary>
+          <div class="answer">
+            Open the app and tap Request Access. If you previously denied access, enable it in iPhone or iPad Settings,
+            then Health, then Data Access and Devices, then Run of Days, and enable permissions.
+          </div>
+        </details>
+
+        <details>
+          <summary>Why do I see No runs even though I ran</summary>
+          <div class="answer">
+            Run of Days reads runs from Apple Health. Please check that your run exists in the Health app under Workouts,
+            and that Health permissions are enabled for Run of Days. Then try pull to refresh or restart the app.
+          </div>
+        </details>
+
+        <details>
+          <summary>How are streaks calculated</summary>
+          <div class="answer">
+            A streak is a sequence of consecutive calendar days with at least one running workout per day.
+            Multiple runs on the same day count as the same day in the streak.
+          </div>
+        </details>
+
+        <details>
+          <summary>Subscriptions and billing</summary>
+          <div class="answer">
+            Subscriptions are handled by Apple. You can subscribe from inside the app, and manage or cancel via Apple ID Subscriptions.
+            If features do not unlock, open the in app paywall and use Restore Purchases.
+          </div>
+        </details>
+
+        <div class="links" style="margin-top:3rem">
+          <a class="btn" href="privacy-policy.html">Privacy Policy</a>
+          <a class="btn" href="terms-of-use.html">Terms of Use</a>
+          <a class="btn" href="APP_STORE_LINK" rel="noopener">App Store</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>Copyright 2026 Edenspace Oy. All rights reserved.</div>
+      <div class="fine">Support and product page for the App Store listing.</div>
+    </footer>
+  </div>
+
+</body>
+</html>
