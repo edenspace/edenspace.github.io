@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Run of Days</title>
-  <meta name="description" content="Run of Days turns Apple Health running workouts into streaks, milestones, charts, share cards, widgets, and CSV exports. Your data stays on your device." />
+  <meta name="description" content="Run of Days turns Apple Health running workouts into streaks, milestones, records, charts, share cards, widgets, and CSV exports. Your data stays on your device." />
   <style>
     :root {
       --bg: #060708;
@@ -556,8 +556,8 @@
           <h2 id="hero-title">Build your running streak, day by day.</h2>
           <p class="lead">
             Run of Days reads your Apple Health running workouts and turns them into streaks,
-            milestones, trend charts, share cards, widgets, and CSV exports. Your Health data
-            stays on your device.
+            milestones, personal records, trend charts, share cards, widgets, and CSV exports.
+            Your Health data stays on your device.
           </p>
 
           <div class="hero-actions">
@@ -576,12 +576,12 @@
               <span class="proof-label">Current, past, and milestone views</span>
             </div>
             <div class="proof-item">
-              <span class="proof-value">Charts</span>
-              <span class="proof-label">VO2max, pace, BPM, zones</span>
+              <span class="proof-value">Records</span>
+              <span class="proof-label">All-time and per-streak bests</span>
             </div>
             <div class="proof-item">
-              <span class="proof-value">Export</span>
-              <span class="proof-label">Streak or full-run CSV</span>
+              <span class="proof-value">Charts</span>
+              <span class="proof-label">VO2max, pace, distance, BPM, zones</span>
             </div>
           </div>
         </div>
@@ -602,16 +602,16 @@
 
         <div class="screens">
           <figure class="phone">
-            <img src="screenshot-home.png" alt="Run of Days home screen with today's run, current streak, milestones, and past streaks" loading="lazy" />
+            <img src="screenshot-home.png" alt="Run of Days home screen with today's run, current streak, personal records, and milestones" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-streak.png" alt="Run of Days streak screen with summary totals, VO2max chart, and run list" loading="lazy" />
+            <img src="screenshot-streak.png" alt="Run of Days streak screen with summary totals, VO2max chart, and records" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-run-details.png" alt="Run of Days run details screen with pace, VDOT, VO2max, and heart-rate chart" loading="lazy" />
+            <img src="screenshot-run-details.png" alt="Run of Days run details screen with pace, VDOT, VO2max, and heart-rate candle chart" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-milestone.png" alt="Run of Days 100-day milestone share card with running totals and averages" loading="lazy" />
+            <img src="screenshot-milestone.png" alt="Run of Days 100-day milestone share card preview with running totals and averages" loading="lazy" />
           </figure>
         </div>
       </div>
@@ -635,16 +635,16 @@
             <h3>Streaks and milestones</h3>
             <p>
               Track current and past streaks, review date ranges, and unlock 7-day, 30-day,
-              100-day, and yearly milestone summaries.
+              100-day, 200-day, and yearly milestone summaries.
             </p>
           </article>
 
           <article class="feature">
             <div class="feature-icon" aria-hidden="true">HR</div>
-            <h3>Run details</h3>
+            <h3>Run details and records</h3>
             <p>
-              Open a run to inspect duration, distance, pace, speed, heart rate, elevation,
-              VDOT, VO2max, and estimated race projections.
+              Inspect duration, distance, pace, speed, heart rate, elevation, VDOT, VO2max,
+              and race projections. Personal records highlight all-time and per-streak bests.
             </p>
           </article>
 
@@ -652,8 +652,8 @@
             <div class="feature-icon" aria-hidden="true">Z</div>
             <h3>Trend charts</h3>
             <p>
-              Switch streak charts between VO2max, pace, BPM, and heart-rate zones. Optional
-              profile values help make zone estimates more relevant.
+              Switch streak charts between VO2max, pace, distance, BPM, and heart-rate zones.
+              Candle bars show per-bucket min, max, and average at a glance.
             </p>
           </article>
 
@@ -661,8 +661,8 @@
             <div class="feature-icon" aria-hidden="true">W</div>
             <h3>Widget, share, export</h3>
             <p>
-              Add a Home Screen widget, share streak or milestone cards, and export either
-              a single streak or every recorded run as CSV.
+              Add a Home Screen widget, preview and share streak or milestone cards, and
+              export either a single streak or every recorded run as CSV.
             </p>
           </article>
         </div>
@@ -725,6 +725,15 @@
               VO2max is imported from Apple Health when a same-day sample is available. VDOT is
               estimated by Run of Days from a run's recorded distance and duration. Both are
               estimates for orientation, not medical or coaching-grade output.
+            </div>
+          </details>
+
+          <details>
+            <summary>What counts as a record?</summary>
+            <div class="answer">
+              Records track personal bests across longest run, fastest pace, highest average heart
+              rate, and longest duration. Each is tracked both all-time and within the current
+              streak, and a celebration appears when a new record is set.
             </div>
           </details>
 
