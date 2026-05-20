@@ -10,9 +10,9 @@
             --bg: #000;
             --fg: #fff;
             --muted: #e6e6e6;
-            --max-width: 900px; /* maximum content width */
-            --footer-height: 84px; /* fixed footer height */
-            --footer-logo-h: 56px; /* fixed footer logo height (does NOT scale) */
+            --max-width: 900px;
+            --footer-height: 84px;
+            --footer-logo-h: 56px;
         }
 
         html,body{height:100%;margin:0}
@@ -26,7 +26,6 @@
             font-family: "Inconsolata", monospace;
             -webkit-font-smoothing:antialiased;
             -moz-osx-font-smoothing:grayscale;
-            /* fluid base font size */
             font-size: clamp(16px, 1.6vw, 18px);
         }
 
@@ -43,89 +42,29 @@
             text-align:center;
         }
 
-        /* logo text (non-semantic div, not bold) */
-        .logo-text{
-            margin:0;
-            font-family: 'Libre Barcode 128 Text', monospace;
-            /* allow EDENSPACE to grow almost full width on narrow screens */
-            font-size: clamp(2.8rem, 22vw, 8rem);
-            line-height:1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: 400; /* explicitly not bold */
-        }
-
-        .tagline{
-            margin-top: clamp(.5rem, 1.6vw, .85rem);
-            color: var(--muted);
-            font-size: clamp(1rem, 2.4vw, 1.25rem);
-        }
-
-        .contact{
-            /* more space above the email */
-            margin-top: clamp(1rem, 4vw, 1.5rem);
-            display:flex;
-            flex-direction:column;
-            gap: clamp(.15rem, .8vw, .4rem);
-            align-items:center;
-            font-size: clamp(1rem, 2.2vw, 1.25rem);
-            color: var(--muted);
-        }
-
-        .contact a{ color:inherit; text-decoration:none }
-
-        footer.site-footer{
-            height: var(--footer-height);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background: rgba(0,0,0,0.9);
-            flex-shrink:0;
-        }
-
-        /* Footer image is fixed size and does NOT scale */
-        .site-footer .reliable-partner img{
-            height: var(--footer-logo-h);
-            width: auto;
-            display:block;
-            opacity: 0;
-            animation: fade-up .9s ease-out 1.7s forwards;
-        }
-
-        /* --- animations --- */
-        @keyframes reveal {
-            from { clip-path: inset(0 100% 0 0); }
-            to   { clip-path: inset(0 0 0 0); }
-        }
-        @keyframes fade-up {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.78;
-                text-shadow: 0 0 0 rgba(255,255,255,0);
-            }
-            50% {
-                opacity: 1;
-                text-shadow: 0 0 14px rgba(255,255,255,0.22);
-            }
-        }
-        @keyframes blink {
-            0%, 49%   { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-
+        /* logo */
         .logo-wrap{
-            position: relative;
             display: inline-block;
             max-width: 100%;
-            overflow: hidden;
         }
         .logo-text{
-            animation: reveal 1.3s cubic-bezier(.2,.7,.2,1) .15s both;
-            will-change: clip-path;
+            margin: 0;
+            font-family: 'Libre Barcode 128 Text', monospace;
+            font-size: clamp(2.8rem, 22vw, 8rem);
+            line-height: 1;
+            white-space: nowrap;
+            font-weight: 400;
+            /* cursor lives on the right edge of the logo, which is also the
+               typing edge since chars are appended */
+            border-right: 0.18ch solid transparent;
+            min-height: 1em;
+        }
+        .logo-text.is-typing{
+            border-right-color: var(--muted);
+        }
+        .logo-text.is-pending,
+        .logo-text.is-blinking{
+            animation: blink 1.1s steps(1) infinite;
         }
         /* per-letter breathing wave — slow light flowing through the barcode */
         .logo-text .bar{
@@ -135,24 +74,24 @@
         }
 
         .tagline{
-            opacity: 0;
-            animation: fade-up .8s ease-out 1.0s forwards;
-        }
-        .cursor{
-            display: inline-block;
-            width: .5ch;
-            height: 1em;
-            background: var(--muted);
-            vertical-align: -0.12em;
-            margin-left: .35ch;
-            animation: blink 1.1s steps(1) infinite;
+            margin-top: clamp(.5rem, 1.6vw, .85rem);
+            color: var(--muted);
+            font-size: clamp(1rem, 2.4vw, 1.25rem);
         }
 
         .contact{
-            opacity: 0;
-            animation: fade-up .8s ease-out 1.3s forwards;
+            margin-top: clamp(1rem, 4vw, 1.5rem);
+            display:flex;
+            flex-direction:column;
+            gap: clamp(.15rem, .8vw, .4rem);
+            align-items:center;
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+            color: var(--muted);
         }
+
         .contact a{
+            color:inherit;
+            text-decoration:none;
             position: relative;
             display: inline-block;
         }
@@ -173,39 +112,104 @@
             transform: scaleX(1);
         }
 
+        footer.site-footer{
+            height: var(--footer-height);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background: rgba(0,0,0,0.9);
+            flex-shrink:0;
+        }
+        .site-footer .reliable-partner img{
+            height: var(--footer-logo-h);
+            width: auto;
+            display:block;
+            opacity: 0;
+            transition: opacity .9s ease-out;
+        }
+        .site-footer .reliable-partner img.is-visible{
+            opacity: 1;
+        }
+
+        /* typed lines (tagline, email, bizid, end). Each grows as an
+           inline-block centered in its parent — so the text stays centered
+           at every step of typing. */
+        .typed{
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: middle;
+            border-right: 0.2ch solid transparent;
+            line-height: 1;
+            min-height: 1em;
+        }
+        /* zero-width space ensures a line box exists even when empty so the
+           cursor (border-right) renders at full height */
+        .typed::before{
+            content: '\200B';
+        }
+        .typed.is-typing{
+            border-right-color: var(--muted);
+        }
+        .typed.is-pending,
+        .typed.is-blinking{
+            animation: blink 1.1s steps(1) infinite;
+        }
+
+        /* --- animations --- */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.78;
+                text-shadow: 0 0 0 rgba(255,255,255,0);
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 14px rgba(255,255,255,0.22);
+            }
+        }
+        @keyframes blink {
+            0%, 50%   { border-right-color: var(--muted); }
+            51%, 100% { border-right-color: transparent; }
+        }
+
         @media (prefers-reduced-motion: reduce){
             .logo-text,
             .logo-text .bar,
-            .logo-text .bar.is-glitching,
-            .tagline,
-            .contact,
-            .cursor,
-            .site-footer .reliable-partner img{
+            .typed{
                 animation: none;
             }
-            .logo-text,
-            .tagline,
-            .contact,
+            .typed,
+            .logo-text{
+                border-right-color: transparent;
+            }
             .site-footer .reliable-partner img{
                 opacity: 1;
-                clip-path: none;
-                transform: none;
+                transition: none;
             }
             .contact a::after{ transition: none; }
         }
-
     </style>
 </head>
 <body>
     <main class="hero" role="main">
         <div class="content">
             <div class="logo-wrap">
-                <div class="logo-text">EDENSPACE</div>
+                <div class="logo-text" aria-label="EDENSPACE"></div>
             </div>
-            <div class="tagline">a software development company<span class="cursor" aria-hidden="true"></span></div>
+            <div class="tagline">
+                <span class="typed" data-typed="tagline"></span>
+            </div>
             <div class="contact" aria-label="contact details">
-                <div><a href="mailto:contact@edenspace.fi">contact@edenspace.fi</a></div>
-                <div>2656910-7</div>
+                <div>
+                    <a href="mailto:contact@edenspace.fi">
+                        <span class="typed" data-typed="email"></span>
+                    </a>
+                </div>
+                <div>
+                    <span class="typed" data-typed="bizid"></span>
+                </div>
+                <div>
+                    <span class="typed" data-typed="end" aria-hidden="true"></span>
+                </div>
             </div>
         </div>
     </main>
@@ -218,13 +222,115 @@
 
     <script>
         (function(){
-            var logo = document.querySelector('.logo-text');
-            if(!logo) return;
-            var text = logo.textContent;
-            logo.setAttribute('aria-label', text);
-            logo.innerHTML = text.split('').map(function(c, i){
-                return '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + c + '</span>';
-            }).join('');
+            var LOGO    = 'EDENSPACE';
+            var TAGLINE = 'a software development company';
+            var EMAIL   = 'contact@edenspace.fi';
+            var BIZID   = '2656910-7';
+
+            var logo    = document.querySelector('.logo-text');
+            var tagline = document.querySelector('[data-typed="tagline"]');
+            var email   = document.querySelector('[data-typed="email"]');
+            var bizid   = document.querySelector('[data-typed="bizid"]');
+            var endLine = document.querySelector('[data-typed="end"]');
+            var footer  = document.querySelector('.site-footer .reliable-partner img');
+
+            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if(reduced){
+                logo.innerHTML = LOGO.split('').map(function(c, i){
+                    return '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + c + '</span>';
+                }).join('');
+                tagline.textContent = TAGLINE;
+                email.textContent   = EMAIL;
+                bizid.textContent   = BIZID;
+                footer.classList.add('is-visible');
+                return;
+            }
+
+            function wait(ms){
+                return new Promise(function(res){ setTimeout(res, ms); });
+            }
+
+            // type EDENSPACE — cursor blinks on empty centered line, then
+            // bars stream in, growing outward from center
+            function typeLogo(){
+                return new Promise(function(resolve){
+                    logo.classList.add('is-pending');
+                    wait(650).then(function(){
+                        logo.classList.remove('is-pending');
+                        logo.classList.add('is-typing');
+                        var i = 0;
+                        function tick(){
+                            if(i >= LOGO.length){
+                                logo.classList.remove('is-typing');
+                                resolve();
+                                return;
+                            }
+                            logo.insertAdjacentHTML('beforeend',
+                                '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + LOGO.charAt(i) + '</span>');
+                            i++;
+                            setTimeout(tick, 95 + Math.random() * 80);
+                        }
+                        tick();
+                    });
+                });
+            }
+
+            // type into a .typed element with human-ish cadence
+            function typeInto(el, text){
+                return new Promise(function(resolve){
+                    el.classList.remove('is-pending');
+                    el.classList.add('is-typing');
+                    var i = 0;
+                    function nextDelay(prev, curr){
+                        var d = 55 + Math.random() * 90;
+                        if(prev === ' ') d += 60 + Math.random() * 80;
+                        if(curr === ' ') d += 30;
+                        if(Math.random() < 0.05) d += 180 + Math.random() * 260;
+                        return d;
+                    }
+                    function tick(){
+                        if(i >= text.length){
+                            el.classList.remove('is-typing');
+                            resolve();
+                            return;
+                        }
+                        var prev = i > 0 ? text.charAt(i - 1) : '';
+                        var curr = text.charAt(i);
+                        el.textContent += curr;
+                        i++;
+                        setTimeout(tick, nextDelay(prev, curr));
+                    }
+                    tick();
+                });
+            }
+
+            // cursor parks blinking at the end of a finished line, then
+            // jumps to the next empty line and blinks there — like
+            // pressing Enter at the end of a line in a terminal
+            function lineBreak(prev, next){
+                prev.classList.add('is-blinking');
+                return wait(380).then(function(){
+                    prev.classList.remove('is-blinking');
+                    next.classList.add('is-pending');
+                    return wait(520);
+                });
+            }
+
+            // master sequence
+            wait(400)
+                .then(typeLogo)
+                .then(function(){ return lineBreak(logo, tagline); })
+                .then(function(){ return typeInto(tagline, TAGLINE); })
+                .then(function(){ return lineBreak(tagline, email); })
+                .then(function(){ return typeInto(email, EMAIL); })
+                .then(function(){ return lineBreak(email, bizid); })
+                .then(function(){ return typeInto(bizid, BIZID); })
+                .then(function(){ return lineBreak(bizid, endLine); })
+                .then(function(){
+                    // final resting cursor stays blinking forever
+                    return wait(700);
+                })
+                .then(function(){ footer.classList.add('is-visible'); });
         })();
     </script>
 </body>
