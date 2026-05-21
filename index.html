@@ -74,13 +74,19 @@
         }
 
         .tagline{
-            margin-top: clamp(.5rem, 1.6vw, .85rem);
             color: var(--muted);
             font-size: clamp(1rem, 2.4vw, 1.25rem);
         }
 
+        /* empty line between sections — the cursor stops here as if
+           Enter had been pressed */
+        .break-line{
+            font-size: clamp(1rem, 2.4vw, 1.25rem);
+            line-height: 1;
+            color: var(--muted);
+        }
+
         .contact{
-            margin-top: clamp(1rem, 4vw, 1.5rem);
             display:flex;
             flex-direction:column;
             gap: clamp(.15rem, .8vw, .4rem);
@@ -195,8 +201,14 @@
             <div class="logo-wrap">
                 <div class="logo-text" aria-label="EDENSPACE"></div>
             </div>
+            <div class="break-line" aria-hidden="true">
+                <span class="typed" data-typed="break1"></span>
+            </div>
             <div class="tagline">
                 <span class="typed" data-typed="tagline"></span>
+            </div>
+            <div class="break-line" aria-hidden="true">
+                <span class="typed" data-typed="break2"></span>
             </div>
             <div class="contact" aria-label="contact details">
                 <div>
@@ -228,7 +240,9 @@
             var BIZID   = '2656910-7';
 
             var logo    = document.querySelector('.logo-text');
+            var break1  = document.querySelector('[data-typed="break1"]');
             var tagline = document.querySelector('[data-typed="tagline"]');
+            var break2  = document.querySelector('[data-typed="break2"]');
             var email   = document.querySelector('[data-typed="email"]');
             var bizid   = document.querySelector('[data-typed="bizid"]');
             var endLine = document.querySelector('[data-typed="end"]');
@@ -304,13 +318,15 @@
                 });
             }
 
-            // cursor parks blinking at the end of a finished line, then
-            // jumps to the next empty line and blinks there — like
-            // pressing Enter at the end of a line in a terminal
+            // cursor parks blinking at the end of a line, then jumps to
+            // the next empty line and blinks there — like pressing Enter.
+            // Works whether prev was just typed, was already blinking, or
+            // was an empty pending line.
             function lineBreak(prev, next){
                 prev.classList.add('is-blinking');
                 return wait(380).then(function(){
                     prev.classList.remove('is-blinking');
+                    prev.classList.remove('is-pending');
                     next.classList.add('is-pending');
                     return wait(520);
                 });
@@ -319,9 +335,15 @@
             // master sequence
             wait(400)
                 .then(typeLogo)
-                .then(function(){ return lineBreak(logo, tagline); })
+                // Enter — cursor onto the empty line between logo and tagline
+                .then(function(){ return lineBreak(logo, break1); })
+                // Enter again — cursor onto the (still empty) tagline line
+                .then(function(){ return lineBreak(break1, tagline); })
                 .then(function(){ return typeInto(tagline, TAGLINE); })
-                .then(function(){ return lineBreak(tagline, email); })
+                // Enter — onto empty line between tagline and contact
+                .then(function(){ return lineBreak(tagline, break2); })
+                // Enter again — onto the empty email line
+                .then(function(){ return lineBreak(break2, email); })
                 .then(function(){ return typeInto(email, EMAIL); })
                 .then(function(){ return lineBreak(email, bizid); })
                 .then(function(){ return typeInto(bizid, BIZID); })
