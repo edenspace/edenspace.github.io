@@ -581,7 +581,7 @@
             </div>
             <div class="proof-item">
               <span class="proof-value">Charts</span>
-              <span class="proof-label">VO2max, pace, distance, BPM, zones</span>
+              <span class="proof-label">VO2max, pace, distance, BPM</span>
             </div>
           </div>
         </div>
@@ -594,8 +594,8 @@
           <div>
             <h2 class="section-title" id="screens-title">Your runs, organized.</h2>
             <p class="section-copy">
-              Start from today's status, open the active streak, then drill into individual runs
-              with HealthKit-powered details.
+              Start from today's status, open the active streak as a run list or a calendar of
+              daily distance rings, then drill into individual runs with HealthKit-powered details.
             </p>
           </div>
         </div>
@@ -605,7 +605,7 @@
             <img src="screenshot-home.png" alt="Run of Days home screen with today's run, current streak, personal records, and milestones" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-streak.png" alt="Run of Days streak screen with summary totals, VO2max chart, and records" loading="lazy" />
+            <img src="screenshot-streak.png" alt="Run of Days streak calendar with per-day distance rings colored by heart-rate zone, above the streak records" loading="lazy" />
           </figure>
           <figure class="phone">
             <img src="screenshot-run-details.png" alt="Run of Days run details screen with pace, VDOT, VO2max, and heart-rate candle chart" loading="lazy" />
@@ -634,8 +634,9 @@
             <div class="feature-icon" aria-hidden="true">7</div>
             <h3>Streaks and milestones</h3>
             <p>
-              Track current and past streaks, review date ranges, and unlock 7-day, 30-day,
-              100-day, 200-day, and yearly milestone summaries.
+              Track current and past streaks as a list or calendar, and unlock 7-day, 30-day,
+              100-day, 200-day, and yearly milestones. Set a minimum daily distance and allowed
+              rest days to match how you run.
             </p>
           </article>
 
@@ -652,8 +653,9 @@
             <div class="feature-icon" aria-hidden="true">Z</div>
             <h3>Trend charts</h3>
             <p>
-              Switch streak charts between VO2max, pace, distance, BPM, and heart-rate zones.
-              Candle bars show per-bucket min, max, and average at a glance.
+              Switch streak charts between VO2max, pace, distance, and BPM. Distance totals by
+              run, week, or month; BPM splits into average or heart-rate zones. Candle bars show
+              per-bucket min, max, and average at a glance.
             </p>
           </article>
 
@@ -705,8 +707,11 @@
           <details>
             <summary>How are streaks calculated?</summary>
             <div class="answer">
-              A streak is a sequence of consecutive calendar days with at least one running
-              workout per day. Multiple runs on the same day count as one streak day.
+              A streak is a run of consecutive days that each meet a minimum daily distance
+              (default 1 mile). Multiple runs on the same day add up and count as one streak day.
+              In Settings you can change the minimum distance and allow a number of rest days per
+              week, month, or year, and Run of Days re-evaluates your whole history under the new
+              rules. Rest days are marked with a moon in the calendar and run list.
             </div>
           </details>
 
