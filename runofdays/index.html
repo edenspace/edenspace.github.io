@@ -263,8 +263,8 @@
 
     .screens {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
       align-items: start;
     }
 
@@ -479,7 +479,7 @@
       }
 
       .screens {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .support-layout {
@@ -594,24 +594,28 @@
           <div>
             <h2 class="section-title" id="screens-title">Your runs, organized.</h2>
             <p class="section-copy">
-              Start from today's status, open the active streak as a run list or a calendar of
-              daily distance rings, then drill into individual runs with HealthKit-powered details.
+              Start from today's status, open the active streak as a calendar of daily distance
+              rings or a run list, follow the trends, then drill into individual runs with
+              HealthKit-powered details.
             </p>
           </div>
         </div>
 
         <div class="screens">
           <figure class="phone">
-            <img src="screenshot-home.png" alt="Run of Days home screen with today's run, current streak, personal records, and milestones" loading="lazy" />
+            <img src="screenshot-home.png" alt="Run of Days home screen with today's run, current streak, record and milestone summaries, and past streaks" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-streak.png" alt="Run of Days streak calendar with per-day distance rings colored by heart-rate zone, above the streak records" loading="lazy" />
+            <img src="screenshot-streak.png" alt="Run of Days streak screen with a VO2max trend chart above a calendar of per-day distance rings" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-run-details.png" alt="Run of Days run details screen with pace, VDOT, VO2max, and heart-rate candle chart" loading="lazy" />
+            <img src="screenshot-zones.png" alt="Run of Days streak screen showing time in heart-rate zones over the streak, above the run list" loading="lazy" />
           </figure>
           <figure class="phone">
-            <img src="screenshot-milestone.png" alt="Run of Days 100-day milestone share card preview with running totals and averages" loading="lazy" />
+            <img src="screenshot-run-details.png" alt="Run of Days run details screen with pace, VDOT, VO2max, and a heart-rate candle chart" loading="lazy" />
+          </figure>
+          <figure class="phone">
+            <img src="screenshot-share.png" alt="Run of Days share card preview for a 236-day streak with totals, averages, and bests" loading="lazy" />
           </figure>
         </div>
       </div>
@@ -654,8 +658,8 @@
             <h3>Trend charts</h3>
             <p>
               Switch streak charts between VO2max, pace, distance, and BPM. Distance totals by
-              run, week, or month; BPM splits into average or heart-rate zones. Candle bars show
-              per-bucket min, max, and average at a glance.
+              run, week, or month; BPM splits into average or time in heart-rate zones. Trend
+              lines carry each point's min-max range, and rest days are shaded.
             </p>
           </article>
 
@@ -663,8 +667,9 @@
             <div class="feature-icon" aria-hidden="true">W</div>
             <h3>Widget, share, export</h3>
             <p>
-              Add a Home Screen widget, preview and share streak or milestone cards, and
-              export either a single streak or every recorded run as CSV.
+              Add a Home Screen widget, preview and share streak or milestone cards that carry
+              your daily distance rule, and export either a single streak or every recorded run
+              as CSV.
             </p>
           </article>
         </div>
