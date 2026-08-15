@@ -260,38 +260,104 @@
                 return;
             }
 
+            // --- skip mechanism ------------------------------------------
+            // Any key press (or tap) fast-forwards the current step to its
+            // finished state. Mash the keyboard to reveal everything at once.
+            var activeSkip = null;   // fn that completes the running step now
+            var pendingSkips = 0;    // skips requested before a step started
+
+            function requestSkip(){
+                if(activeSkip){
+                    var fn = activeSkip;
+                    activeSkip = null;
+                    fn();
+                } else {
+                    pendingSkips++;
+                }
+            }
+            window.addEventListener('keydown', requestSkip);
+            window.addEventListener('pointerdown', requestSkip);
+
+            // Runs one animated step. `run(finish)` starts the animation and
+            // must call finish() when done naturally; it returns a cleanup fn
+            // that cancels any pending timers. `complete` (optional) snaps the
+            // step's content straight to its finished state when skipped.
+            function step(run, complete){
+                return new Promise(function(resolve){
+                    var done = false;
+                    var cleanup = null;
+                    function finish(){
+                        if(done) return;
+                        done = true;
+                        if(cleanup) cleanup();
+                        activeSkip = null;
+                        resolve();
+                    }
+                    function skip(){
+                        if(done) return;
+                        done = true;
+                        if(cleanup) cleanup();
+                        if(complete) complete();
+                        activeSkip = null;
+                        resolve();
+                    }
+                    cleanup = run(finish);
+                    activeSkip = skip;
+                    // honor a skip that was queued before this step began
+                    if(pendingSkips > 0){
+                        pendingSkips--;
+                        skip();
+                    }
+                });
+            }
+
             function wait(ms){
-                return new Promise(function(res){ setTimeout(res, ms); });
+                var t;
+                return step(function(finish){
+                    t = setTimeout(finish, ms);
+                    return function(){ clearTimeout(t); };
+                });
+            }
+
+            function barSpan(c, i){
+                return '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + c + '</span>';
             }
 
             // type EDENSPACE — cursor blinks on empty centered line, then
             // bars stream in, growing outward from center
             function typeLogo(){
-                return new Promise(function(resolve){
+                var t;
+                return step(function(finish){
                     logo.classList.add('is-pending');
-                    wait(650).then(function(){
+                    var i = 0;
+                    function tick(){
+                        if(i >= LOGO.length){
+                            logo.classList.remove('is-typing');
+                            finish();
+                            return;
+                        }
+                        logo.insertAdjacentHTML('beforeend', barSpan(LOGO.charAt(i), i));
+                        i++;
+                        t = setTimeout(tick, 95 + Math.random() * 80);
+                    }
+                    t = setTimeout(function(){
                         logo.classList.remove('is-pending');
                         logo.classList.add('is-typing');
-                        var i = 0;
-                        function tick(){
-                            if(i >= LOGO.length){
-                                logo.classList.remove('is-typing');
-                                resolve();
-                                return;
-                            }
-                            logo.insertAdjacentHTML('beforeend',
-                                '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + LOGO.charAt(i) + '</span>');
-                            i++;
-                            setTimeout(tick, 95 + Math.random() * 80);
-                        }
                         tick();
-                    });
+                    }, 650);
+                    return function(){ clearTimeout(t); };
+                }, function(){
+                    logo.classList.remove('is-pending', 'is-typing');
+                    logo.innerHTML = LOGO.split('').map(function(c, i){
+                        return barSpan(c, i);
+                    }).join('');
                 });
             }
 
             // type into a .typed element with human-ish cadence
             function typeInto(el, text){
-                return new Promise(function(resolve){
+                var t;
+                return step(function(finish){
                     el.classList.remove('is-pending');
                     el.classList.add('is-typing');
                     var i = 0;
@@ -305,30 +371,38 @@
                     function tick(){
                         if(i >= text.length){
                             el.classList.remove('is-typing');
-                            resolve();
+                            finish();
                             return;
                         }
                         var prev = i > 0 ? text.charAt(i - 1) : '';
                         var curr = text.charAt(i);
                         el.textContent += curr;
                         i++;
-                        setTimeout(tick, nextDelay(prev, curr));
+                        t = setTimeout(tick, nextDelay(prev, curr));
                     }
                     tick();
+                    return function(){ clearTimeout(t); };
+                }, function(){
+                    el.classList.remove('is-pending', 'is-typing');
+                    el.textContent = text;
                 });
             }
 
             // cursor parks blinking at the end of a line, then jumps to
             // the next empty line and blinks there — like pressing Enter.
-            // Works whether prev was just typed, was already blinking, or
-            // was an empty pending line.
             function lineBreak(prev, next){
-                prev.classList.add('is-blinking');
-                return wait(380).then(function(){
-                    prev.classList.remove('is-blinking');
-                    prev.classList.remove('is-pending');
+                var t1, t2;
+                return step(function(finish){
+                    prev.classList.add('is-blinking');
+                    t1 = setTimeout(function(){
+                        prev.classList.remove('is-blinking', 'is-pending');
+                        next.classList.add('is-pending');
+                        t2 = setTimeout(finish, 520);
+                    }, 380);
+                    return function(){ clearTimeout(t1); clearTimeout(t2); };
+                }, function(){
+                    prev.classList.remove('is-blinking', 'is-pending');
                     next.classList.add('is-pending');
-                    return wait(520);
                 });
             }
 
@@ -352,7 +426,12 @@
                     // final resting cursor stays blinking forever
                     return wait(700);
                 })
-                .then(function(){ footer.classList.add('is-visible'); });
+                .then(function(){
+                    footer.classList.add('is-visible');
+                    // sequence over — further key presses do nothing
+                    window.removeEventListener('keydown', requestSkip);
+                    window.removeEventListener('pointerdown', requestSkip);
+                });
         })();
     </script>
 </body>
