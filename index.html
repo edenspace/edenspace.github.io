@@ -3,15 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Edenspace Oy</title>
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Libre+Barcode+128+Text" rel="stylesheet">
+    <title>Edenspace Oy | Software development</title>
+    <meta name="description" content="Edenspace Oy is a Finnish software development company. Contact us at contact@edenspace.fi.">
+    <link rel="canonical" href="https://edenspace.fi/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Edenspace Oy">
+    <meta property="og:title" content="Edenspace Oy | Software development">
+    <meta property="og:description" content="Edenspace Oy is a Finnish software development company. Contact us at contact@edenspace.fi.">
+    <meta property="og:url" content="https://edenspace.fi/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Edenspace Oy | Software development">
+    <meta name="twitter:description" content="Edenspace Oy is a Finnish software development company. Contact us at contact@edenspace.fi.">
     <style>
+        @font-face {
+            font-family: 'Inconsolata';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/inconsolata-latin-400.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Libre Barcode 128 Text';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/libre-barcode-128-text-latin-400.woff2') format('woff2');
+        }
+
         :root{
             --bg: #000;
             --fg: #fff;
             --muted: #e6e6e6;
             --max-width: 900px;
-            --footer-height: 84px;
+            --footer-height: 112px;
             --footer-logo-h: 56px;
         }
 
@@ -121,6 +146,8 @@
         footer.site-footer{
             height: var(--footer-height);
             display:flex;
+            flex-direction:column;
+            gap: 10px;
             align-items:center;
             justify-content:center;
             background: rgba(0,0,0,0.9);
@@ -130,11 +157,20 @@
             height: var(--footer-logo-h);
             width: auto;
             display:block;
-            opacity: 0;
+            opacity: 1;
             transition: opacity .9s ease-out;
         }
-        .site-footer .reliable-partner img.is-visible{
-            opacity: 1;
+        .site-footer .reliable-partner img.is-pending{
+            opacity: 0;
+        }
+        .privacy-link{
+            color: var(--muted);
+            font-size: 14px;
+            text-underline-offset: 3px;
+        }
+        a:focus-visible{
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
         }
 
         /* typed lines (tagline, email, bizid, end). Each grows as an
@@ -199,25 +235,25 @@
     <main class="hero" role="main">
         <div class="content">
             <div class="logo-wrap">
-                <div class="logo-text" aria-label="EDENSPACE"></div>
+                <h1 class="logo-text" aria-label="EDENSPACE">EDENSPACE</h1>
             </div>
             <div class="break-line" aria-hidden="true">
                 <span class="typed" data-typed="break1"></span>
             </div>
             <div class="tagline">
-                <span class="typed" data-typed="tagline"></span>
+                <span class="typed" data-typed="tagline">a software development company</span>
             </div>
             <div class="break-line" aria-hidden="true">
                 <span class="typed" data-typed="break2"></span>
             </div>
             <div class="contact" aria-label="contact details">
                 <div>
-                    <a href="mailto:contact@edenspace.fi">
-                        <span class="typed" data-typed="email"></span>
+                    <a href="mailto:contact@edenspace.fi" aria-label="contact@edenspace.fi">
+                        <span class="typed" data-typed="email">contact@edenspace.fi</span>
                     </a>
                 </div>
                 <div>
-                    <span class="typed" data-typed="bizid"></span>
+                    <span class="typed" data-typed="bizid">2656910-7</span>
                 </div>
                 <div>
                     <span class="typed" data-typed="end" aria-hidden="true"></span>
@@ -230,15 +266,11 @@
         <div class="reliable-partner" aria-hidden="false">
             <img src="luotettava-kumppani-logo-white.png" alt="Luotettava kumppani">
         </div>
+        <a class="privacy-link" href="privacy.html">Website privacy</a>
     </footer>
 
     <script>
         (function(){
-            var LOGO    = 'EDENSPACE';
-            var TAGLINE = 'a software development company';
-            var EMAIL   = 'contact@edenspace.fi';
-            var BIZID   = '2656910-7';
-
             var logo    = document.querySelector('.logo-text');
             var break1  = document.querySelector('[data-typed="break1"]');
             var tagline = document.querySelector('[data-typed="tagline"]');
@@ -248,17 +280,14 @@
             var endLine = document.querySelector('[data-typed="end"]');
             var footer  = document.querySelector('.site-footer .reliable-partner img');
 
-            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if(reduced){
-                logo.innerHTML = LOGO.split('').map(function(c, i){
-                    return '<span class="bar" style="--i:' + i + '" aria-hidden="true">' + c + '</span>';
-                }).join('');
-                tagline.textContent = TAGLINE;
-                email.textContent   = EMAIL;
-                bizid.textContent   = BIZID;
-                footer.classList.add('is-visible');
-                return;
-            }
+            // The complete page is the default; JavaScript only adds the intro.
+            var LOGO    = logo.textContent;
+            var TAGLINE = tagline.textContent;
+            var EMAIL   = email.textContent;
+            var BIZID   = bizid.textContent;
+
+            var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if(reduced || typeof Promise === 'undefined') return;
 
             // --- skip mechanism ------------------------------------------
             // Any key press (or tap) fast-forwards the current step to its
@@ -406,6 +435,26 @@
                 });
             }
 
+            function showFinal(){
+                logo.textContent = LOGO;
+                tagline.textContent = TAGLINE;
+                email.textContent = EMAIL;
+                bizid.textContent = BIZID;
+                [logo, break1, tagline, break2, email, bizid, endLine].forEach(function(el){
+                    el.classList.remove('is-pending', 'is-typing', 'is-blinking');
+                });
+                footer.classList.remove('is-pending');
+                window.removeEventListener('keydown', requestSkip);
+                window.removeEventListener('pointerdown', requestSkip);
+            }
+
+            // Clear only when the animation is ready to run.
+            logo.textContent = '';
+            tagline.textContent = '';
+            email.textContent = '';
+            bizid.textContent = '';
+            footer.classList.add('is-pending');
+
             // master sequence
             wait(400)
                 .then(typeLogo)
@@ -427,11 +476,12 @@
                     return wait(700);
                 })
                 .then(function(){
-                    footer.classList.add('is-visible');
+                    footer.classList.remove('is-pending');
                     // sequence over — further key presses do nothing
                     window.removeEventListener('keydown', requestSkip);
                     window.removeEventListener('pointerdown', requestSkip);
-                });
+                })
+                .catch(showFinal);
         })();
     </script>
 </body>
